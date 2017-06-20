@@ -12,6 +12,7 @@ import ratpack.websocket.WebSocketMessage;
 import ratpack.websocket.WebSockets;
 import rx.subjects.PublishSubject;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,13 @@ public class DemoUsersHandler implements Handler {
     private static final Logger LOG = LoggerFactory.getLogger(DemoUsersHandler.class);
 
     private final Map<String, PublishSubject<String>> listeners = new HashMap<>();
+
+    private final DemoService service;
+
+    @Inject
+    public DemoUsersHandler(DemoService service) {
+        this.service = service;
+    }
 
     @Override
     public void handle(Context ctx) throws Exception {
