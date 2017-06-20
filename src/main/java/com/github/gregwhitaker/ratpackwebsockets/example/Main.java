@@ -25,7 +25,7 @@ public class Main {
                                     .registry(Guice.registry(b -> b.module(DemoModule.class)))
                                     .handlers(chain ->
                                             chain
-                                                .get("demo/events", DemoHandler.class)
+                                                .get("demo/events", DemoUsersHandler.class)
                                                 .files(f -> f.dir("public").indexFiles("index.html"))));
     }
 }
