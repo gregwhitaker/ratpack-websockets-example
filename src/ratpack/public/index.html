@@ -53,20 +53,37 @@
                 }
 
                 function onMessage(evt) {
-                    writeToScreen('RECEIVED: ' + evt.data);
+                    if (evt.data.type == 'clientconnect') {
+                        handleClientConnectMessage(evt.data);
+                    }
+
+                    if (evt.data.type == 'clientdisconnect') {
+                        handleClientDisconnectMessage(evt.data);
+                    }
+
+                    if (evt.data.type == 'message') {
+                        handleMessageMessage(evt.data);
+                    }
                 }
 
                 function onError(evt) {
-                    writeToScreen('ERROR:' + evt.data);
+                    // Noop
                 }
 
                 function doSend(message) {
-                    writeToScreen('SENT: ' + message);
                     websocket.send(message);
                 }
 
-                function writeToScreen(message) {
-                    $('#output').append(message + '<br /><br />');
+                function handleClientConnectMessage(message) {
+
+                }
+
+                function handleClientDisconnectMessage(message) {
+
+                }
+
+                function handleMessageMessage(message) {
+
                 }
             });
         </script>
@@ -79,7 +96,7 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="#">Ratpack Websockets Example</a>
                     </div>
-                    <div class="navbar-right">
+                    <div class="navbar-right" style="padding-top: 12px; padding-right: 12px">
                         <input type="text" id="client" />
                         <button id="connect">Connect</button>
                         <button id="disconnect" disabled>Disconnect</button>
@@ -97,17 +114,8 @@
                                 </div>
                             </div>
                             <div class="member_list">
-                                <ul class="list-unstyled">
-                                    <li class="left clearfix">
-                                        <span class="chat-img pull-left">
-                                            <img src="images/cat.png" alt="User Avatar" class="img-circle">
-                                        </span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header_sec">
-                                                <strong class="primary-font">Jack Sparrow</strong>
-                                            </div>
-                                        </div>
-                                    </li>
+                                <ul id="clients" class="list-unstyled">
+
                                 </ul>
                             </div>
                         </div>
@@ -117,16 +125,8 @@
                         <div class="row">
                             <!--new_message_head-->
                             <div class="chat_area">
-                                <ul class="list-unstyled">
-                                    <li class="left clearfix">
-                                        <span class="chat-img1 pull-left">
-                                            <img src="images/cat.png" alt="User Avatar" class="img-circle">
-                                        </span>
-                                        <div class="chat-body1 clearfix">
-                                            <p>This is where the message goes</p>
-                                            <div class="chat_time pull-right">09:40PM</div>
-                                        </div>
-                                    </li>
+                                <ul id="messages" class="list-unstyled">
+
                                 </ul>
                             </div>
                             <!--chat_area-->
