@@ -3,15 +3,22 @@
     <head>
         <title>Ratpack Websockets Example</title>
         <script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script language="javascript" type="text/javascript">
             var websocket;
-            var ping;
+
+            // Handles Websocket
             jQuery(function ($) {
                 $('#connect').click(doConnect);
+
                 $('#disconnect').click(doDisconnect);
+
                 $('#send').click(function () {
-                    doSend( $('#message').val() )
+                    doSend($('#message').val())
                 });
+
                 function doConnect() {
                     websocket = new WebSocket( "ws://localhost:5050/chat?client=" + $("#client").val() );
                     websocket.onopen = function (evt) {
@@ -27,25 +34,36 @@
                         onError(evt)
                     };
                 }
+
                 function doDisconnect() {
                     websocket.close();
                 }
+
                 function onOpen(evt) {
-                    writeToScreen("CONNECTED");
+                    $('#connect').prop('disabled', true);
+                    $('#disconnect').prop('disabled', false);
+                    $('#send').prop('disabled', false);
                 }
+
                 function onClose(evt) {
-                    writeToScreen("DISCONNECTED");
+                    $('#connect').prop('disabled', false);
+                    $('#disconnect').prop('disabled', true);
+                    $('#send').prop('disabled', true);
                 }
+
                 function onMessage(evt) {
                     writeToScreen('RECEIVED: ' + evt.data);
                 }
+
                 function onError(evt) {
                     writeToScreen('ERROR:' + evt.data);
                 }
+
                 function doSend(message) {
                     writeToScreen('SENT: ' + message);
                     websocket.send(message);
                 }
+
                 function writeToScreen(message) {
                     $('#output').append(message + '<br /><br />');
                 }
@@ -54,17 +72,23 @@
     </head>
 
     <body>
-        <h2>Ratpack Websockets Example</h2>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Ratpack Websockets Example</a>
+                </div>
+            </div>
+        </nav>
 
         <div id="connection">
             <input type="text" id="client" />
             <button id="connect">Connect</button>
-            <button id="disconnect">Disconnect</button>
+            <button id="disconnect" disabled>Disconnect</button>
         </div>
 
         <div id="editor">
             <input type="text" id="message" />
-            <button id="send">Send</button>
+            <button id="send" disabled>Send</button>
         </div>
 
         <div id="messages">
