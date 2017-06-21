@@ -1,8 +1,5 @@
 package com.github.gregwhitaker.ratpackwebsockets.example;
 
-import com.github.gregwhitaker.ratpackwebsockets.example.core.UserConnectHandler;
-import com.github.gregwhitaker.ratpackwebsockets.example.core.UserEventHandler;
-import com.github.gregwhitaker.ratpackwebsockets.example.handler.UserEventStreams;
 import ratpack.rx.RxRatpack;
 import ratpack.server.BaseDir;
 import ratpack.server.RatpackServer;
@@ -25,12 +22,11 @@ public class Main {
                 s -> s.serverConfig(
                         c -> c.baseDir(BaseDir.find()))
                                     .registryOf(registry -> {
-                                        registry.add(new UserEventStreams());
+                                        registry.add(new ChatHandler());
                                     })
                                     .handlers(chain ->
                                             chain
-                                                .post("demo/connect", UserConnectHandler.class)
-                                                .get("demo/events", UserEventHandler.class)
+                                                .get("chat", ChatHandler.class)
                                                 .files(f -> f.dir("public").indexFiles("index.html"))));
     }
 }
