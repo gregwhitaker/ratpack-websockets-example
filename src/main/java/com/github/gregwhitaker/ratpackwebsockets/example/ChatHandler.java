@@ -13,6 +13,7 @@ import ratpack.websocket.WebSockets;
 import rx.RxReactiveStreams;
 import rx.subjects.PublishSubject;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,8 +30,6 @@ public class ChatHandler implements Handler {
     public void handle(Context ctx) throws Exception {
         WebSockets.websocket(ctx, new WebSocketHandler<String>() {
 
-            private WebSocket ws;
-
             @Override
             public String onOpen(WebSocket webSocket) throws Exception {
                 String client = ctx.getRequest().getQueryParams().get("client");
@@ -42,15 +41,15 @@ public class ChatHandler implements Handler {
                 } else if (clients.contains(client)) {
                     webSocket.close(500, "Client is already connected");
                 } else {
-                    ws = webSocket;
-                    clients.add(client);
-
-                    Map<String, String> response = new HashMap<>();
+                    Map<String, Object> response = new HashMap<>();
                     response.put("type", "clientconnect");
                     response.put("client", client);
-                    response.put("success", "true");
+                    response.put("success", true);
+                    response.put("connectedClients", Collections.unmodifiableSet(clients));
 
                     webSocket.send(mapper.writer().writeValueAsString(response));
+
+                    clients.add(client);
                 }
 
                 return null;
