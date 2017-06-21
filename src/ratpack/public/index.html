@@ -3,6 +3,7 @@
     <head>
         <title>Ratpack Websockets Example</title>
         <script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <link rel="stylesheet" href="css/chat.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -72,27 +73,75 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Ratpack Websockets Example</a>
+        <div class="main_section">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Ratpack Websockets Example</a>
+                    </div>
+                    <div class="navbar-right">
+                        <input type="text" id="client" />
+                        <button id="connect">Connect</button>
+                        <button id="disconnect" disabled>Disconnect</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container">
+                <div class="chat_container">
+                    <div class="col-sm-3 chat_sidebar">
+                        <div class="row">
+                            <div id="custom-search-input">
+                                <div class="input-group col-md-12">
+                                    Users
+                                </div>
+                            </div>
+                            <div class="member_list">
+                                <ul class="list-unstyled">
+                                    <li class="left clearfix">
+                                        <span class="chat-img pull-left">
+                                            <img src="images/cat.png" alt="User Avatar" class="img-circle">
+                                        </span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header_sec">
+                                                <strong class="primary-font">Jack Sparrow</strong>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--chat_sidebar-->
+                    <div class="col-sm-9 message_section">
+                        <div class="row">
+                            <!--new_message_head-->
+                            <div class="chat_area">
+                                <ul class="list-unstyled">
+                                    <li class="left clearfix">
+                                        <span class="chat-img1 pull-left">
+                                            <img src="images/cat.png" alt="User Avatar" class="img-circle">
+                                        </span>
+                                        <div class="chat-body1 clearfix">
+                                            <p>This is where the message goes</p>
+                                            <div class="chat_time pull-right">09:40PM</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--chat_area-->
+                            <div class="message_write">
+                                <textarea class="form-control" placeholder="type a message"></textarea>
+                                <div class="clearfix"></div>
+                                <div class="chat_bottom">
+                                    <a id="send" class="pull-right btn btn-success">Send</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--message_section-->
                 </div>
             </div>
-        </nav>
-
-        <div id="connection">
-            <input type="text" id="client" />
-            <button id="connect">Connect</button>
-            <button id="disconnect" disabled>Disconnect</button>
-        </div>
-
-        <div id="editor">
-            <input type="text" id="message" />
-            <button id="send" disabled>Send</button>
-        </div>
-
-        <div id="messages">
-
         </div>
 
     </body>
