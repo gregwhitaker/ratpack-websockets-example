@@ -41,27 +41,28 @@
                 }
 
                 function onOpen(evt) {
-                    $('#connect').prop('disabled', true);
-                    $('#disconnect').prop('disabled', false);
+                    $('#connect').prop('visibility', "visible");
+                    $('#disconnect').prop('visibility', "hidden");
                     $('#send').prop('disabled', false);
                 }
 
                 function onClose(evt) {
-                    $('#connect').prop('disabled', false);
-                    $('#disconnect').prop('disabled', true);
+                    $('#connect').prop('visibility', "hidden");
+                    $('#disconnect').prop('visibility', "visible");
                     $('#send').prop('disabled', true);
                 }
 
                 function onMessage(evt) {
-                    if (evt.data.type == 'clientconnect') {
+                    var event = JSON.parse(evt.data);
+                    if (event.type === 'clientconnect') {
                         handleClientConnectMessage(evt.data);
                     }
 
-                    if (evt.data.type == 'clientdisconnect') {
+                    if (event.type === 'clientdisconnect') {
                         handleClientDisconnectMessage(evt.data);
                     }
 
-                    if (evt.data.type == 'message') {
+                    if (event.type === 'message') {
                         handleMessageMessage(evt.data);
                     }
                 }
@@ -96,7 +97,7 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="#">Ratpack Websockets Example</a>
                     </div>
-                    <div class="navbar-right" style="padding-top: 12px; padding-right: 12px">
+                    <div id="connectinfo" class="navbar-right">
                         <input type="text" id="client" />
                         <button id="connect">Connect</button>
                         <button id="disconnect" disabled>Disconnect</button>
