@@ -56,13 +56,9 @@
                     var event = JSON.parse(evt.data);
                     if (event.type === 'clientconnect') {
                         handleClientConnectMessage(evt.data);
-                    }
-
-                    if (event.type === 'clientdisconnect') {
+                    } else if (event.type === 'clientdisconnect') {
                         handleClientDisconnectMessage(evt.data);
-                    }
-
-                    if (event.type === 'message') {
+                    } else if (event.type === 'message') {
                         handleMessageMessage(evt.data);
                     }
                 }
