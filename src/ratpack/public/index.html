@@ -12,6 +12,8 @@
 
             // Handles Websocket
             jQuery(function ($) {
+                $("#chatContainer").hide();
+
                 $('#connect').click(doConnect);
 
                 $('#disconnect').click(doDisconnect);
@@ -41,15 +43,17 @@
                 }
 
                 function onOpen(evt) {
-                    $('#connect').prop('visibility', "visible");
-                    $('#disconnect').prop('visibility', "hidden");
+                    $('#connect').prop('disabled', true);
+                    $('#disconnect').prop('disabled', false);
                     $('#send').prop('disabled', false);
+                    $('#chatContainer').show();
                 }
 
                 function onClose(evt) {
-                    $('#connect').prop('visibility', "hidden");
-                    $('#disconnect').prop('visibility', "visible");
+                    $('#connect').prop('disabled', false);
+                    $('#disconnect').prop('disabled', true);
                     $('#send').prop('disabled', true);
+                    $('#chatContainer').hide();
                 }
 
                 function onMessage(evt) {
@@ -102,7 +106,7 @@
             </nav>
 
             <div class="container">
-                <div class="chat_container">
+                <div id="chatContainer" class="chat_container">
                     <div class="col-sm-3 chat_sidebar">
                         <div class="row">
                             <div id="custom-search-input">
