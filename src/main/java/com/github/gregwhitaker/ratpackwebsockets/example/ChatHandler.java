@@ -58,7 +58,14 @@ public class ChatHandler implements Handler {
             @Override
             public void onClose(WebSocketClose<String> close) throws Exception {
                 String client = ctx.getRequest().getQueryParams().get("client");
+
                 clients.remove(client);
+
+                Map<String, Object> event = new HashMap<>();
+                event.put("type", "clientdisconnect");
+                event.put("client", client);
+
+                events.onNext(mapper.writer().writeValueAsString(event));
             }
 
             @Override
