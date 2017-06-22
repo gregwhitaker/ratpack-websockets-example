@@ -59,11 +59,11 @@
                 function onMessage(evt) {
                     var event = JSON.parse(evt.data);
                     if (event.type === 'clientconnect') {
-                        handleClientConnectMessage(evt.data);
+                        handleClientConnectEvent(event);
                     } else if (event.type === 'clientdisconnect') {
-                        handleClientDisconnectMessage(evt.data);
+                        handleClientDisconnectEvent(event);
                     } else if (event.type === 'message') {
-                        handleMessageMessage(evt.data);
+                        handleMessageEvent(event);
                     }
                 }
 
@@ -75,15 +75,17 @@
                     websocket.send(message);
                 }
 
-                function handleClientConnectMessage(message) {
+                function handleClientConnectEvent(event) {
+                    event.connectedClients.forEach(function(entry) {
+                        $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
+                    });
+                }
+
+                function handleClientDisconnectEvent(event) {
 
                 }
 
-                function handleClientDisconnectMessage(message) {
-
-                }
-
-                function handleMessageMessage(message) {
+                function handleMessageEvent(event) {
 
                 }
             });
