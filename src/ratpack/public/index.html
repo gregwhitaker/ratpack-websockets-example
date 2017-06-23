@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script language="javascript" type="text/javascript">
+            var client;
             var websocket;
             var connectedClients = [];
 
@@ -24,8 +25,9 @@
                 });
 
                 function doConnect() {
+                    client = $("#client").val();
                     connectedClients = [];
-                    websocket = new WebSocket( "ws://localhost:5050/chat?client=" + $("#client").val() );
+                    websocket = new WebSocket( "ws://localhost:5050/chat?client=" + client );
                     websocket.onopen = function (evt) {
                         onOpen(evt)
                     };
@@ -77,7 +79,8 @@
                 }
 
                 function doSend(message) {
-                    websocket.send(message);
+                    var event = JSON.stringify({ "type": "message", "client": client, "message": message });
+                    websocket.send(event);
                 }
 
                 function handleInitEvent(event) {
@@ -115,7 +118,7 @@
                 }
 
                 function handleMessageEvent(event) {
-
+                    $('#messages').append('<li class="left clearfix admin_chat"> <span class="chat-img1 pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body1 clearfix"> <strong>' + event.client + ':</strong> <p>' + event.message + '</p></div> </li>');
                 }
             });
         </script>
@@ -163,7 +166,7 @@
                             </div>
                             <!--chat_area-->
                             <div class="message_write">
-                                <textarea class="form-control" placeholder="type a message"></textarea>
+                                <textarea id="message" class="form-control" placeholder="type a message"></textarea>
                                 <div class="clearfix"></div>
                                 <div class="chat_bottom">
                                     <a id="send" class="pull-right btn btn-success">Send</a>
