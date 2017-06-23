@@ -120,6 +120,9 @@
 
                 function handleMessageEvent(event) {
                     $('#messages').append('<li class="left clearfix admin_chat"> <span class="chat-img1 pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body1 clearfix"> <strong>' + event.client + ':</strong> <p>' + event.message + '</p></div> </li>');
+
+                    var chatDiv = $("#chat_area");
+                    chatDiv.animate({ scrollTop: chatDiv.prop("scrollHeight") - chatDiv.height() }, 500);
                 }
             });
         </script>
@@ -160,7 +163,7 @@
                     <div class="col-sm-9 message_section">
                         <div class="row">
                             <!--new_message_head-->
-                            <div class="chat_area">
+                            <div id="chat_area" class="chat_area">
                                 <ul id="messages" class="list-unstyled">
 
                                 </ul>
