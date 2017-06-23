@@ -1,4 +1,5 @@
 # ratpack-websockets-example
+[![Build Status](https://travis-ci.org/gregwhitaker/ratpack-websockets-example.svg?branch=master)](https://travis-ci.org/gregwhitaker/ratpack-websockets-example)
 
 An example of using WebSockets with [Ratpack](https://ratpack.io/).
 
