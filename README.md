@@ -1,7 +1,7 @@
 # ratpack-websockets-example
 [![Build Status](https://travis-ci.org/gregwhitaker/ratpack-websockets-example.svg?branch=master)](https://travis-ci.org/gregwhitaker/ratpack-websockets-example)
 
-An example of using WebSockets with [Ratpack](https://ratpack.io/).
+An example of bi-directional communication using WebSockets with [Ratpack](https://ratpack.io/).
 
 This example starts a simple chat room application that allows users to join and chat together via websockets.
 
