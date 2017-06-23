@@ -83,6 +83,8 @@ public class ChatHandler implements Handler {
                 event.put("client", client);
 
                 events.onNext(mapper.writer().writeValueAsString(event));
+
+                LOG.info("Websocket closed for client: {}", client);
             }
 
             @Override

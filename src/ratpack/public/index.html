@@ -24,6 +24,7 @@
                 });
 
                 function doConnect() {
+                    connectedClients = [];
                     websocket = new WebSocket( "ws://localhost:5050/chat?client=" + $("#client").val() );
                     websocket.onopen = function (evt) {
                         onOpen(evt)
@@ -80,6 +81,7 @@
                 }
 
                 function handleInitEvent(event) {
+                    // Render the client list
                     event.connectedClients.forEach(function (entry) {
                         connectedClients.push(entry);
                         $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
@@ -87,7 +89,10 @@
                 }
 
                 function handleClientConnectEvent(event) {
+                    // Add the connected client to the client list
                     connectedClients.push(event.client);
+
+                    // Render the client list
                     $('#clients').empty();
                     connectedClients.forEach(function (entry) {
                         $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
@@ -95,7 +100,17 @@
                 }
 
                 function handleClientDisconnectEvent(event) {
+                    // Remove the disconnected client from the client list
+                    var index = connectedClients.indexOf(event.client);
+                    if (index > -1) {
+                        connectedClients.splice(index, 1);
+                    }
 
+                    // Render the client list
+                    $('#clients').empty();
+                    connectedClients.forEach(function (entry) {
+                        $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
+                    });
                 }
 
                 function handleMessageEvent(event) {
