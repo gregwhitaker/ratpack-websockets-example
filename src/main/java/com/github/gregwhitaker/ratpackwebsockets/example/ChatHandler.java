@@ -84,6 +84,8 @@ public class ChatHandler implements Handler {
 
                 events.onNext(mapper.writer().writeValueAsString(event));
 
+                subscriptions.remove(client);
+
                 LOG.info("Websocket closed for client: {}", client);
             }
 
