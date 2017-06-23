@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Handler responsible for processing websocket requests.
+ */
 public class ChatHandler implements Handler {
     private static final Logger LOG = LoggerFactory.getLogger(ChatHandler.class);
 
