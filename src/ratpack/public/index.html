@@ -9,6 +9,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script language="javascript" type="text/javascript">
             var websocket;
+            var connectedClients = [];
 
             // Handles Websocket
             jQuery(function ($) {
@@ -39,6 +40,7 @@
                 }
 
                 function doDisconnect() {
+                    connectedClients = [];
                     websocket.close();
                 }
 
@@ -58,7 +60,9 @@
 
                 function onMessage(evt) {
                     var event = JSON.parse(evt.data);
-                    if (event.type === 'clientconnect') {
+                    if (event.type === 'init') {
+                        handleInitEvent(event);
+                    } else if (event.type === 'clientconnect') {
                         handleClientConnectEvent(event);
                     } else if (event.type === 'clientdisconnect') {
                         handleClientDisconnectEvent(event);
@@ -75,8 +79,17 @@
                     websocket.send(message);
                 }
 
+                function handleInitEvent(event) {
+                    event.connectedClients.forEach(function (entry) {
+                        connectedClients.push(entry);
+                        $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
+                    });
+                }
+
                 function handleClientConnectEvent(event) {
-                    event.connectedClients.forEach(function(entry) {
+                    connectedClients.push(event.client);
+                    $('#clients').empty();
+                    connectedClients.forEach(function (entry) {
                         $('#clients').append('<li class="left clearfix"> <span class="chat-img pull-left"> <img src="images/cat.png" alt="User Avatar" class="img-circle"> </span> <div class="chat-body clearfix"> <div class="header_sec"> <strong class="primary-font">' + entry + '</strong> </div> </div> </li>')
                     });
                 }

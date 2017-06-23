@@ -10,7 +10,7 @@ import ratpack.websocket.WebSocketClose;
 import ratpack.websocket.WebSocketHandler;
 import ratpack.websocket.WebSocketMessage;
 import ratpack.websocket.WebSockets;
-import rx.RxReactiveStreams;
+import rx.Subscription;
 import rx.subjects.PublishSubject;
 
 import java.util.Collections;
@@ -23,8 +23,15 @@ public class ChatHandler implements Handler {
     private static final Logger LOG = LoggerFactory.getLogger(ChatHandler.class);
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    // List of all currently connected clients
     private final Set<String> clients = new HashSet<>();
+
+    // Subject that all clients subscribe to for events
     private final PublishSubject<String> events = PublishSubject.create();
+
+    // Mapping of client to subscription to the events subject
+    private final Map<String, Subscription> subscriptions = new HashMap<>();
 
     @Override
     public void handle(Context ctx) throws Exception {
@@ -41,15 +48,25 @@ public class ChatHandler implements Handler {
                 } else if (clients.contains(client)) {
                     webSocket.close(500, "Client is already connected");
                 } else {
-                    Map<String, Object> response = new HashMap<>();
-                    response.put("type", "clientconnect");
-                    response.put("client", client);
-                    response.put("success", true);
-                    response.put("connectedClients", Collections.unmodifiableSet(clients));
+                    Map<String, Object> initEvent = new HashMap<>();
+                    initEvent.put("type", "init");
+                    initEvent.put("client", client);
+                    initEvent.put("success", true);
+                    initEvent.put("connectedClients", Collections.unmodifiableSet(clients));
 
-                    webSocket.send(mapper.writer().writeValueAsString(response));
+                    webSocket.send(mapper.writer().writeValueAsString(initEvent));
 
                     clients.add(client);
+
+                    Map<String, Object> clientConnectEvent = new HashMap<>();
+                    clientConnectEvent.put("type", "clientconnect");
+                    clientConnectEvent.put("client", client);
+
+                    events.onNext(mapper.writer().writeValueAsString(clientConnectEvent));
+
+                    subscriptions.put(client, events.subscribe(webSocket::send));
+
+                    LOG.info("Client {} subscribed to event stream", client);
                 }
 
                 return null;
@@ -73,7 +90,5 @@ public class ChatHandler implements Handler {
                 events.onNext(frame.getText());
             }
         });
-
-        WebSockets.websocketBroadcast(ctx, RxReactiveStreams.toPublisher(events));
     }
 }
